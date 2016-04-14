@@ -5,11 +5,9 @@ var config = require('../config/config');
 
 module.exports = function(req, res, next) {
 
-  //  values of the access token and the access key from our headers
   var token = req.headers['x-access-token'];
   var key = req.headers['x-key'];
 
-  // valid token or key
   if (token || key) {
     try {
       var decoded = jwt.decode(token, config.jwtsecret);
@@ -24,14 +22,10 @@ module.exports = function(req, res, next) {
       }
 
       // Authorize the user for access
-      getUser(key ,function (dbUser,err) { /** The key would be the logged in user's username */
-          // this checks to make sure there is a user object
+      getUser(key ,function (dbUser,err) {
           if (dbUser) {
               next(); // user exists, move on
           } else {
-            /**
-             * No user with this name exists, respond back with a 401
-             */
             res.status(401);
             res.json({
               "status": 401,

@@ -6,8 +6,9 @@ var bcrypt = require('bcrypt');
 var auth = {
 
   login: function(req, res) {
-    console.log(req.body)
-    
+      console.log(req.body)
+      console.log(res.status)
+
     var username = req.body.username || '';
     var password = req.body.password || '';
     console.log('u: ' + username);
@@ -16,25 +17,24 @@ var auth = {
       res.status(401);
       res.json({
         "status": 401,
-        "message": "Invalid cred"
+        "message": "Invalid credentials"
       });
       return;
     }
 
-    // Query to db
     auth.getUser(username, function(dbUserObj,err) {
-      if (!dbUserObj) { // If authentication fails
+      if (!dbUserObj) {
         res.status(401);
         res.json({
           "status": 401,
-          "message": "Invalid credent"
+          "message": "Invalid credentials"
         });
         return;
       }
 
       if (dbUserObj) {
 
-        // If authentication is success, generate token
+
         bcrypt.compare(password,dbUserObj.password, function(err, passmatch) {
             if (passmatch == true) {
               res.json(genToken(dbUserObj));
@@ -73,8 +73,6 @@ var auth = {
       });
   },
   encryptPass: function(password,callback) {
-      // this will auto-gen a salt
-      // bcrypt.hash(password,size of hash, function)
       bcrypt.hash(password, 12, function(err, hash) {
         if (hash) {
           callback(hash);
@@ -87,9 +85,8 @@ var auth = {
 
 /** private methods **/
 
-// generate token
 function genToken(user) {
-  var expires = expiresIn(1); // 1 days
+  var expires = expiresIn(1); // 7 days
   var token = jwt.encode({
     exp: expires
   }, config.jwtsecret);

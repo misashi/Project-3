@@ -13,11 +13,6 @@ var app                 = express()
 app.use(methodOverride('_method'))
 
 
-// mongoose.connect('mongodb://localhost:27017/carparks')
-
-
-// var routes = require('./routes/index');
-
 
 helpers(app)
 app.set('views', path.join(__dirname, 'views'))
@@ -31,6 +26,9 @@ var db = mongoose.connection;
 
 // connect to the db
 mongoose.connect(config.db);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.all('/*', function(req, res, next) {
