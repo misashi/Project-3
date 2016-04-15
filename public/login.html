@@ -3,30 +3,35 @@
   <head>
     <meta charset="utf-8">
     <title>Wow</title>
+    <link rel="stylesheet" href="/css/gameboy.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   </head>
   <body>
-    <h1>Get Token</h1>
+    <div class="game-boy">
     <form>
-      <input name="username" type="text" placeholder="Username" autofocus>
-      <input name="password" type="password" placeholder="Password">
-      <button type="submit" name="button">Get Token</button>
+      <input name="username" style="width:55px;" type="text" placeholder="Username" autofocus>
+      <input name="password" style="width:55px;" type="password" placeholder="Password">
+      <button type="submit" name="button" class='lined thin'>Get Token</button>
 
-      <div id="sendtoken">Send Token</div>
+      <div align="center" id="sendtoken">Send Token</div>
     </form>
+    </div>
     <script type="text/javascript">
       'use strict'
 
       // this is on API application
-      var username = $('input[type="text"]').val()
-      var password = $('input[type="password"]').val()
+
       $('form').submit(function (event) {
+        var username = $('input[type="text"]').val()
+        var password = $('input[type="password"]').val()
         event.preventDefault();
         $.ajax({
             url: '/login',
             method: 'POST',
             data : {
-                form: $('form').serialize(),
+                // form: $('form').serialize(),
+                username: username,
+                password: password,
                 jwt: window.localStorage.getItem('token')
             },
         }).done(function (result) {

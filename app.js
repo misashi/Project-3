@@ -12,7 +12,8 @@ var app                 = express()
 
 app.use(methodOverride('_method'))
 
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 helpers(app)
 app.set('views', path.join(__dirname, 'views'))
@@ -26,9 +27,6 @@ var db = mongoose.connection;
 
 // connect to the db
 mongoose.connect(config.db);
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.all('/*', function(req, res, next) {
